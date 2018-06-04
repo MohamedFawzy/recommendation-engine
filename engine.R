@@ -34,3 +34,26 @@ View(ratings_t)
 ratings_t$sim_rating = ratings_t$rating*ratings_t$similarity
 ratings_t
 
+# sum result set
+result = ratings_t %>% group_by(title) %>% summarise( sum(sim_rating) / sum(similarity) )
+result
+
+
+generateRecommendation <- function(userId){
+  rating_critic = setDT(movie_ratings[colnames(movie_ratings)[userId]], keep.rownames = TRUE)[]
+  names(rating_critic) = c('title','rating')
+  ratings_t = ratings[ratings$title %in% titles_na_critic,]
+  # add similarity values for each user as new variable 
+  x = (setDT(data.frame(sim_users[,userId]), keep.rownames = TRUE)[])
+  names(x) = c('critic', 'similarity')
+  ratings_t = merge(x = ratings_t, y =x , by = "critic", all.x = TRUE)
+  
+  # multiply rating with simarlity values
+  ratings_t$sim_rating = ratings_t$rating*ratings_t$similarity
+  ratings_t
+  
+  # sum result set
+  result = ratings_t %>% group_by(title) %>% summarise( sum(sim_rating) / sum(similarity) )
+  result
+  
+}
