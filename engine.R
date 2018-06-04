@@ -15,40 +15,26 @@ View(movie_ratings)
 sim_users = cor(movie_ratings[,1:6], use="complete.obs")
 View(sim_users)
 
-# predicting the unkown ratings for users
-rating_critic  = setDT(movie_ratings[colnames(movie_ratings) [6]],keep.rownames = TRUE)[]
-names(rating_critic) = c('title','rating')
-View(rating_critic)
 
-# extract non-related movies from list
-titles_na_critic = rating_critic$title[is.na(rating_critic$rating)]
-
-ratings_t = ratings[ratings$title %in% titles_na_critic,]
-View(ratings_t)
-
-x = (setDT(data.frame(sim_users[,6]), keep.rownames = TRUE)[])
-names(x) = c('critic', 'similarity')
-ratings_t = merge(x = ratings_t, y =x , by = "critic", all.x = TRUE)
-View(ratings_t)
-
-ratings_t$sim_rating = ratings_t$rating*ratings_t$similarity
-ratings_t
-
-# sum result set
-result = ratings_t %>% group_by(title) %>% summarise( sum(sim_rating) / sum(similarity) )
-result
 
 
 generateRecommendation <- function(userId){
-  rating_critic = setDT(movie_ratings[colnames(movie_ratings)[userId]], keep.rownames = TRUE)[]
+  # predicting the unkown ratings for users
+  rating_critic  = setDT(movie_ratings[colnames(movie_ratings) [userId]],keep.rownames = TRUE)[]
   names(rating_critic) = c('title','rating')
+  View(rating_critic)
+  
+  # extract non-related movies from list
+  titles_na_critic = rating_critic$title[is.na(rating_critic$rating)]
+  
   ratings_t = ratings[ratings$title %in% titles_na_critic,]
-  # add similarity values for each user as new variable 
+  View(ratings_t)
+  
   x = (setDT(data.frame(sim_users[,userId]), keep.rownames = TRUE)[])
   names(x) = c('critic', 'similarity')
   ratings_t = merge(x = ratings_t, y =x , by = "critic", all.x = TRUE)
+  View(ratings_t)
   
-  # multiply rating with simarlity values
   ratings_t$sim_rating = ratings_t$rating*ratings_t$similarity
   ratings_t
   
