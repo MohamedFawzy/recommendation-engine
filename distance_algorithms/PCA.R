@@ -9,3 +9,4 @@ names(pca)
 pca$rotation = -pca$rotation
 pca$x=pca$x
 biplot(pca, scale=0)
+
