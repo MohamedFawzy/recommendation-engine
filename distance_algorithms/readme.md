@@ -11,8 +11,20 @@
 - Supeverised learning .
 - UnSupervised learning .
 - Classification , clustring , dimensionality reduction .
+- Linear regression .
+- Support vector machine .
+- Random forest
+## Neighbourhood-based techniques
+- Euclidean distance
+- Cosine similarity
+- Jaccard similarity
 
-## Statistics Model
+## Math Mode
+- Matrix factorization
+- Alternating least sqaures
+- Singular value decomposition
 
-
-## Math Model
+# Evaluation techniques
+- Root-mean square error
+- Mean absolute error
+- Percision and recall
