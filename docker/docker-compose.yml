@@ -1,0 +1,20 @@
+version: '2'
+services:
+
+  python-microservice:
+    build:
+      context: ./microservices/python/
+      dockerfile: Dockerfile
+    volumes_from :
+      - source_base
+    ports:
+     - "8761:8761"
+
+  ##
+  # Source containers
+  ##
+  source_base:
+        image: nginx:stable
+        volumes:
+            - ../source:/var/www/html
+        command: "true"
