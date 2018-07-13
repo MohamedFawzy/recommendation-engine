@@ -9,6 +9,8 @@ services:
       - source_base
     ports:
      - "8761:8761"
+    tty: true
+
 
   ##
   # Source containers
