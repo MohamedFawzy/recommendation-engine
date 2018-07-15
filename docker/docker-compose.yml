@@ -11,6 +11,16 @@ services:
      - "8761:8761"
     tty: true
 
+  r-microservice:
+    build:
+      context: ./microservices/r/
+      dockerfile: Dockerfile
+    volumes_from:
+      - source_base
+    ports:
+      - "8762:8762"
+    tty: true
+
 
   ##
   # Source containers
