@@ -15,10 +15,10 @@ services:
     build:
       context: ./microservices/r/
       dockerfile: Dockerfile
-    volumes_from:
+    volumes_from :
       - source_base
     ports:
-      - "8762:8762"
+     - "8762:8762"
     tty: true
 
 
