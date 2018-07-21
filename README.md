@@ -22,6 +22,9 @@ Recommender system algorithms and tools , method used and so on collrobative fil
 # Install :
 - `cd docker`
 - `docker compose up`
+- You should see something like this
+![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/docker.png)
+
 - Confirm everything is working correctly by running the following command
   `docker ps`
 - Then you can enter container with the following command `docker exec -it docker_python-microservice_1 /bin/bash`
