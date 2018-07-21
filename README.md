@@ -9,7 +9,7 @@ Recommender system algorithms and tools , method used and so on collrobative fil
 
 # Datasets:
 - Jester5k e.g of user ratings distribution in R language:
-![alt text] (https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/user-ratings.png)
+![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/user-ratings.png)
 
 # Algorithms :
 - Collaborative Filtering
