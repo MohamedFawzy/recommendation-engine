@@ -2,10 +2,14 @@
 Recommender system algorithms and tools , method used and so on collrobative filtering etc .
 
 
-# Requirements 
+# Requirements
+### Native
 - R Language 3.5.x .
 - Python 2.7 .
 - Recommenderlab library for R language .
+
+### Docker
+- Docker installed on your host machine
 
 # Datasets:
 - Jester5k e.g of user ratings distribution in R language:
@@ -13,3 +17,12 @@ Recommender system algorithms and tools , method used and so on collrobative fil
 
 # Algorithms :
 - Collaborative Filtering
+
+
+# Install :
+- `cd docker`
+- `docker compose up`
+- Confirm everything is working correctly by running the following command
+  `docker ps`
+- Then you can enter container with the following command `docker exec -it docker_python-microservice_1 /bin/bash`
+- Your source code under the following path `/var/www/html`
