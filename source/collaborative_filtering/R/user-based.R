@@ -24,3 +24,13 @@ recommender_model
 recc_model <- Recommender(data = rec_data_train, method= "UBCF")
 recc_model
 recc_model@model$data
+# predictions on test set
+n_recommender <- 10
+recc_predicit <- predict(object = recc_model, newdata = rec_data_test, n = n_recommender)
+recc_predicit
+# define list of predicited recommendations :
+rec_list <- sapply(recc_predicit@items, function(x){
+  colnames(Jester5k)[x]
+})
+
+rec_list
