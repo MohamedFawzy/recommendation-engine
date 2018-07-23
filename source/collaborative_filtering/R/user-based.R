@@ -49,4 +49,18 @@ boxplot(rowMeans(model_data [rowMeans(model_data)>=-5 & rowMeans(model_data)<= 7
 # drop users who have low average rating and high average rating
 model_data = model_data[rowMeans(model_data) >= -5 & rowMeans(model_data) <= 7]
 dim(model_data)
+# examine the rating distribution of the first 100 users in the data
+image(model_data, main = "Rating distribution of 100 users")
+# evaluate the model using cross validation and 5-fold cross validation
+items_to_keep <- 30
+rating_threshold <- 3
+n_fold <- 5
+eval_sets <- evaluationScheme(data = model_data, method = "cross-validation",train = percentage_training,
+                              given = items_to_keep, goodRating= rating_threshold, k = n_fold)
+eval_sets
 
+# size of five sets formed by the corss-validation
+size_sets <- sapply(eval_sets@runsTrain, length)
+size_sets
+# extract data set e.g train , known the test set with the items to build recommender , unkown the test set with the items to test the recommender
+getData(eval_sets, "train")
