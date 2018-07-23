@@ -17,4 +17,10 @@ rec_data_train <- Jester5k[which_train, ]
 rec_data_test  <- Jester5k[!which_train, ]
 dim(rec_data_train)
 dim(rec_data_test)
-
+# explore models avaliable and their parameters in recommenderlab package
+recommender_model <- recommenderRegistry$get_entries(dataType = "realRatingMatrix")
+recommender_model
+# build user-based collobrative filtering
+recc_model <- Recommender(data = rec_data_train, method= "UBCF")
+recc_model
+recc_model@model$data
