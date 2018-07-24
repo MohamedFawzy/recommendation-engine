@@ -64,3 +64,29 @@ size_sets <- sapply(eval_sets@runsTrain, length)
 size_sets
 # extract data set e.g train , known the test set with the items to build recommender , unkown the test set with the items to test the recommender
 getData(eval_sets, "train")
+# evaluate user based collobrative filtering
+model_to_evaluate <- "UBCF"
+model_parameters  <- NULL
+
+eval_recommender <- Recommender(data = getData(eval_sets, 'train'), method= model_to_evaluate, parameter = model_parameters)
+
+items_to_recommend <- 10
+eval_prediction <- predict(object = eval_recommender, newdata = getData(eval_sets, "known"), n = items_to_recommend, type="ratings")
+eval_prediction
+
+eval_accuracy <- calcPredictionAccuracy(  x = eval_prediction, data =
+                                            getData(eval_sets, "unknown"), byUser = TRUE)
+head(eval_accuracy)
+# calcaute the average ratings per user
+apply(eval_accuracy, 2, mean)
+
+results <- evaluate(x = eval_sets, method = model_to_evaluate, n = seq(10, 100, 10))
+
+head(getConfusionMatrix(results)[[1]])
+
+columns_to_sum <- c("TP", "FP", "FN", "TN")
+indices_summed <- Reduce("+", getConfusionMatrix(results))[, columns_to_sum]
+head(indices_summed)
+# draw the accuracy using plot function
+plot(results, annotate= TRUE, main = "ROC Curve")
+
