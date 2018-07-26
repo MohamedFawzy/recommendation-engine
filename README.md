@@ -17,6 +17,8 @@ Recommender system algorithms and tools , method used and so on collrobative fil
 
 # Algorithms :
 - Collaborative Filtering
+  - Item Based
+  - User Based
 
 
 # Install :

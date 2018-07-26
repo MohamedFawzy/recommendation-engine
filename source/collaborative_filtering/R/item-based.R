@@ -29,6 +29,21 @@ eval_recommender <- Recommender(data = getData(eval_sets, "train"), method= mode
 items_to_recommend <- 10
 eval_prediction <- predict(eval_recommender, newdata = getData(eval_sets, "known"), n = items_to_recommend, type="ratings")
 class(eval_prediction)
+eval_accuracy <- calcPredictionAccuracy(x = eval_prediction, data = getData(eval_sets, "unknown"), byUser = TRUE)
+head(eval_accuracy)
+# accuracy for the whole model
+apply(eval_accuracy, 2 , mean)
+# plot accuracy for each training set
+results <- evaluate(x = eval_sets, method = model_to_evaluate, n = seq(10,100,10))
+plot(results, "prec/rec", annotate = TRUE, main = "Precision-recall")
+# accuracy for each fold
+results@results[1]
+# merge columns
+columns_to_sum <- c("TP", "FP", "FN", "TN","precision","recall")
+indices_summed <- Reduce("+", getConfusionMatrix(results))[,columns_to_sum]
+head(indices_summed)
+# plot accuracy foreach fold
+plot(results, annotate = TRUE, main = "ROC curve")
 
 # train model on traning data
 model_to_evaluate <- "IBCF"
