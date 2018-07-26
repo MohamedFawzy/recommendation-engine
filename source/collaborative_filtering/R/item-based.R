@@ -91,4 +91,5 @@ list_results <- evaluate(x = eval_sets, method = models, n= n_recommendations)
 # plot the result
 plot(list_results, annotate = c(1,2), legend = "topleft")
 title("ROC curve")
-
+plot(list_results, "prec/rec", annotate = 1, legend = "bottomright")
+title("Precision-recall")
