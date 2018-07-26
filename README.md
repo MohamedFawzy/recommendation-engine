@@ -18,6 +18,7 @@ Recommender system algorithms and tools , method used and so on collrobative fil
 # Algorithms :
 - Collaborative Filtering
   - Item Based
+    ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/Rplot.png)
   - User Based
 
 
