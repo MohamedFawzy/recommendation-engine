@@ -70,3 +70,25 @@ recc_user_1 <- model_predicition@items[[1]]
 jokes_user_1 <- model_predicition@itemLabels[recc_user_1]
 jokes_user_1
 
+# parameters tuning for model
+vector_k <- c(5, 10, 20, 30, 40)
+# generate different models using the cosine method at different values of k
+model1 <- lapply(vector_k, function(k,l){
+  list(name = "IBCF", param = list(method = "cosine", k = k)) 
+})
+
+names(model1) <- paste0("IBCF_cos_k_", vector_k)
+
+model2 <- lapply(vector_k, function(k,l){ 
+  list(name = "IBCF", param = list(method = "pearson", k = k))
+})
+
+names(model2) <- paste0("IBCF_pea_k_", vector_k)
+
+n_recommendations <- c(1, 5, seq(10, 100, 10))
+models = append(model1, model2)
+list_results <- evaluate(x = eval_sets, method = models, n= n_recommendations)
+# plot the result
+plot(list_results, annotate = c(1,2), legend = "topleft")
+title("ROC curve")
+
