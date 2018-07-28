@@ -3,3 +3,4 @@ RUN pip install --upgrade pip
 RUN pip install numpy
 RUN  easy_install pandas
 RUN easy_install sklearn
+RUN easy_install matplotlib

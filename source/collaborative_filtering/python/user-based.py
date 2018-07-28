@@ -6,6 +6,7 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 import numpy
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 # set path for data
 current_working_dir = os.getcwd()
@@ -23,3 +24,4 @@ print(df.head())
 # print columns for dataframe
 print(df.columns)
 print(df.shape)
+plt.hist(df['rating'])
