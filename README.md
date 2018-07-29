@@ -14,7 +14,11 @@ Recommender system algorithms and tools , method used and so on collrobative fil
 # Datasets:
 - Jester5k e.g of user ratings distribution in R language:
 ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/user-ratings.png)
-
+- MovieLens 100K users rating
+  - Ratings distribution count
+  ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/Figure_1.png)
+  - Movies ratings distribution
+  ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/Figure_2.png)
 # Algorithms :
 - Collaborative Filtering
   - Item Based
