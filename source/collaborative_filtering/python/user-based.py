@@ -71,3 +71,26 @@ sparsity /= (ratings.shape[0] * ratings.shape[1])
 sparsity *= 100
 print('Sparsity: {:4.2}%'.format(sparsity))
 # create training set and test set
+ratings_train, ratings_test = train_test_split(ratings, test_size= 0.33, random_state=42)
+# dimensions of the train set, test set
+print("Training set shape")
+print(ratings_train.shape)
+
+print("Testing set shape")
+print(ratings_test.shape)
+# predict the user's rating for an item is give by the weighted sum of all other user's ratings for that item.
+print("""
+###########################################################
+#User Based CF                                            #
+# 1- Creating similarity matrix between n_users using     #
+# cosine similarity.                                      #
+#                                                         ###############
+# 2- Prediciting unkown rating for item i                 ############################
+# for an active user u by calcauting                      ##############################
+# the weighted sum of all the users for the item          #####################################
+#                                                         ##########################################
+# 3- Recommending the new items to the user               ##############################################
+#                                                         ################################################
+#                                                         ###################################################
+###########################################################
+""")
