@@ -3,7 +3,7 @@ import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
-import numpy
+import numpy as np
 import pandas as pd
 import os
 import matplotlib as mpl
@@ -12,7 +12,7 @@ if os.environ.get('DISPLAY','') == '':
     mpl.use('Agg')
 
 import matplotlib.pyplot as plt
-
+from sklearn.cross_validation import train_test_split
 
 # set path for data
 current_working_dir = os.getcwd()
@@ -49,3 +49,25 @@ n_movies = df['itemId'].unique().shape[0]
 
 print(str(n_users) + ' users')
 print(str(n_movies) + ' movies')
+
+# create matrix of zeros with n_users * n_movies to store the ratings in the cell of matrix ratings
+ratings = np.zeros((n_users, n_movies))
+print(ratings)
+# foreach tuple in dataframe df extract the information from each column of the row and store it in the rating matrix cell value
+for  row in df.itertuples():
+   ratings[row[1]-1, row[2]-1] = row[3]
+
+print(type(ratings))
+# get shape for the array of count_ratings
+print(ratings.shape)
+# sample data for how ratings looks like
+print(ratings)
+
+# get sparsity in the dataset
+# Hint sparsity represent the ratings exist in dataset e.g if we have only 6.3% that means only 6.3% from the dataset has ratings and others has zeros
+# Hint zeros means are empty rating
+sparsity = float(len(ratings.nonzero()[0]))
+sparsity /= (ratings.shape[0] * ratings.shape[1])
+sparsity *= 100
+print('Sparsity: {:4.2}%'.format(sparsity))
+# create training set and test set
