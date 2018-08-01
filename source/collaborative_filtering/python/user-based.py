@@ -13,7 +13,8 @@ if os.environ.get('DISPLAY','') == '':
 
 import matplotlib.pyplot as plt
 from sklearn.cross_validation import train_test_split
-
+from sklearn.metrics import mean_squared_error
+import sklearn
 # set path for data
 current_working_dir = os.getcwd()
 print(current_working_dir)
@@ -70,7 +71,7 @@ sparsity = float(len(ratings.nonzero()[0]))
 sparsity /= (ratings.shape[0] * ratings.shape[1])
 sparsity *= 100
 print('Sparsity: {:4.2}%'.format(sparsity))
-# create training set and test set
+# create training set and test set with values 0.33 for test dataset and 42% as Training dataset
 ratings_train, ratings_test = train_test_split(ratings, test_size= 0.33, random_state=42)
 # dimensions of the train set, test set
 print("Training set shape")
@@ -94,3 +95,28 @@ print("""
 #                                                         ###################################################
 ###########################################################
 """)
+
+# calcaute the similarity using cosine distance
+dist_out = 1 - sklearn.metrics.pairwise.cosine_distances(ratings_train)
+# the type of the distance matrix will be the same type of the rating matrix
+print(type(dist_out))
+# the deminsion of the matrix will be a square matirx of size equal to the number of users .
+print(dist_out.shape)
+print(""" \n\n <<<<<<<<< sample dataset of the distance matrix >>>>>>>>>>>>>> """)
+print(dist_out)
+# Prediciting unkown ratings for a user
+user_pred = dist_out.dot(ratings_train) / np.array([np.abs(dist_out).sum(axis=1)]).T
+print("\n\n user prediction")
+print(user_pred)
+# error function for the model
+def get_mse(pred, actual):
+    # ignore nonzeros items
+    pred = pred[actual.nonzero()].flatten()
+    actual = actual[actual.nonzero()].flatten()
+    return mean_squared_error(pred, actual)
+# function call to get mse for dataset
+print("mse for Training")
+print(get_mse(user_pred, ratings_train))
+# get model accuracy for test dataset
+print("mse for Testing")
+print(get_mse(user_pred, ratings_test))
