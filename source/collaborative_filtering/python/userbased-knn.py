@@ -54,3 +54,68 @@ print(type(ratings))
 print(ratings.shape)
 # sample data for how ratings looks like
 print(ratings)
+
+# get sparsity in the dataset
+# Hint sparsity represent the ratings exist in dataset e.g if we have only 6.3% that means only 6.3% from the dataset has ratings and others has zeros
+# Hint zeros means are empty rating
+sparsity = float(len(ratings.nonzero()[0]))
+sparsity /= (ratings.shape[0] * ratings.shape[1])
+sparsity *= 100
+print('Sparsity: {:4.2}%'.format(sparsity))
+# create training set and test set with values 0.33 for test dataset and 42% as Training dataset
+ratings_train, ratings_test = train_test_split(ratings, test_size= 0.33, random_state=42)
+# dimensions of the train set, test set
+print("Training set shape")
+print(ratings_train.shape)
+
+print("Testing set shape")
+print(ratings_test.shape)
+
+# predict the user's rating for an item is give by the weighted sum of all other user's ratings for that item.
+print("""
+###########################################################
+#User Based CF                                            #
+# 1- Creating similarity matrix between n_users using     #
+# cosine similarity.                                      #
+#                                                         ###############
+# 2- Prediciting unkown rating for item i                 ############################
+# for an active user u by calcauting                      ##############################
+# the weighted sum of all the users for the item          #####################################
+#                                                         ##########################################
+# 3- Recommending the new items to the user               ##############################################
+#                                                         ################################################
+#                                                         ###################################################
+###########################################################
+""")
+
+# KNN part
+k = 5
+neighbor = NearestNeighbors(k, 'cosine')
+# fit training data to KNN
+neighbor.fit(ratings_train)
+#Calculate the top five similar users for each user and their similarity values, that is the distance values between each pair of users
+top_k_distances, top_k_users = neighbor.kneighbors(ratings_train, return_distance=True)
+print("Shape==============>", top_k_users.shape, top_k_distances.shape)
+# top five users similar to user 1
+print(top_k_users[0])
+# choose only top five users for each user and use their rating information
+#while prediciting the ratings using the weighted sum of all of the ratings of these top five similar users
+user_pred_k = np.zeros(ratings_train.shape)
+for i in range(ratings_train.shape[0]):
+       user_pred_k[i,:] = top_k_distances[i].T.dot(ratings_train[top_k_users][i]) /np.array([np.abs(top_k_distances[i].T).sum(axis=0)]).T
+
+print(user_pred_k.shape)
+print(user_pred_k)
+
+# error function for the model
+def get_mse(pred, actual):
+    # ignore nonzeros items
+    pred = pred[actual.nonzero()].flatten()
+    actual = actual[actual.nonzero()].flatten()
+    return mean_squared_error(pred, actual)
+
+# model accuracy
+print("MSE for Training")
+print(get_mse(user_pred_k, ratings_train))
+print("MSE for testing")
+print(get_mse(user_pred_k, ratings_test))    
