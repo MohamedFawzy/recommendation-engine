@@ -74,7 +74,7 @@ print(ratings_test.shape)
 # predict the user's rating for an item is give by the weighted sum of all other user's ratings for that item.
 print("""
 ###########################################################
-# Item Based CF with knn                                            #
+#User Based CF                                            #
 # 1- Creating similarity matrix between n_users using     #
 # cosine similarity.                                      #
 #                                                         ###############
@@ -88,25 +88,6 @@ print("""
 ###########################################################
 """)
 
-# KNN part
-k = 10
-neighbor = NearestNeighbors(k, 'cosine')
-# fit training data to KNN
-neighbor.fit(ratings_train.T)
-#Calculate the top five similar users for each user and their similarity values, that is the distance values between each pair of users
-top_k_distances, top_k_movies = neighbor.kneighbors(ratings_train.T, return_distance=True)
-print("Shape==============>", top_k_movies.shape, top_k_distances.shape)
-# top five users similar to user 1
-print(top_k_movies[0])
-# choose only top five users for each user and use their rating information
-#while prediciting the ratings using the weighted sum of all of the ratings of these top five similar users
-movie_pred_k = np.zeros(ratings_train.shape)
-for i in range(ratings_train.T.shape[0]):
-       movie_pred_k[i,:] = top_k_distances[i].T.dot(ratings_train[top_k_movies][i]) /np.array([np.abs(top_k_distances[i].T).sum(axis=0)]).T
-
-print(movie_pred_k.shape)
-print(movie_pred_k)
-
 # error function for the model
 def get_mse(pred, actual):
     # ignore nonzeros items
@@ -114,8 +95,33 @@ def get_mse(pred, actual):
     actual = actual[actual.nonzero()].flatten()
     return mean_squared_error(pred, actual)
 
-# model accuracy
-print("MSE for Training")
-print(get_mse(movie_pred_k, ratings_train))
-print("MSE for testing")
-print(get_mse(movie_pred_k, ratings_test))
+
+# k = ratings_train.shape[1]
+# neighbor = NearestNeighbors(k, 'cosine')
+# # fit training data to KNN
+# neighbor.fit(ratings_train.T)
+# #Calculate the top five similar users for each user and their similarity values, that is the distance values between each pair of users
+# top_k_distances, top_k_users = neighbor.kneighbors(ratings_train.T, return_distance=True)
+# print("Shape==============>", top_k_users.shape, top_k_distances.shape)
+# # predicit items
+# item_pred = ratings_train.dot(top_k_distances) / np.array( [np.abs(top_k_distances).sum(axis=1)])
+# print(item_pred.shape)
+# print("item predict")
+# print(item_pred)
+# print(get_mse(item_pred, ratings_train))
+
+# KNN part using
+k = 5
+neigh2 = NearestNeighbors(k,'cosine')
+neigh2.fit(ratings_train.T)
+top_k_distances,top_k_movies = neigh2.kneighbors(ratings_train.T,return_distance=True)
+ #rating prediction - top k user based
+pred = np.zeros(ratings_train.T.shape)
+for i in range(ratings_train.T.shape[0]):
+        pred[i,:] = top_k_distances[i].dot(ratings_train.T[top_k_movies][i])/np.array([np.abs(top_k_distances[i]).sum(axis=0)]).T
+
+print('---------------here---------------')
+print(pred)
+
+print("MSE for training set")
+#print(get_mse(pred, ratings_train))
