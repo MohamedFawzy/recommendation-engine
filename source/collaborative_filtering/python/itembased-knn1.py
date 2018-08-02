@@ -122,3 +122,17 @@ print(get_mse(user_pred_k, ratings_test))
 ###### end model and Dataframe to build knn for users ##########
 
 ############ start model for build knn for item-item ###########
+k = 5
+neigh2 = NearestNeighbors(k,'cosine')
+neigh2.fit(ratings_train.T)
+top_k_distances,top_k_movies = neigh2.kneighbors(ratings_train.T,return_distance=True)
+ #rating prediction - top k user based
+pred = np.zeros(ratings_train.T.shape)
+for i in range(ratings_train.T.shape[0]):
+        pred[i,:] = top_k_distances[i].dot(ratings_train.T[top_k_users][i])/np.array([np.abs(top_k_distances[i]).sum(axis=0)]).T
+
+print('---------------here---------------')
+print(pred)
+
+print("MSE for training set")
+print(get_mse(pred, ratings_train))
