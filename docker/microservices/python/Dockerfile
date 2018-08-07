@@ -5,3 +5,4 @@ RUN  easy_install pandas
 RUN easy_install sklearn
 RUN easy_install scipy
 RUN easy_install matplotlib
+RUN easy_install seaborn
