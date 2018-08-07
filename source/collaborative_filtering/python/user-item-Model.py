@@ -10,6 +10,10 @@ from sklearn.cross_validation import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import NearestNeighbors
 import sklearn
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+
 
 ###### start model and Dataframe to build knn for users ##########
 # set path for data
@@ -133,3 +137,19 @@ for k in k_array:
 
     item_train_mse += [get_mse(item_pred, train)]
     item_test_mse  += [get_mse(item_pred, test)]
+
+
+# plot accuracy for tunning k
+pal = sns.color_palette("Set2", 2)
+
+plt.figure(figsize=(8, 8))
+plt.plot(k_array, user_train_mse, c=pal[0], label='User-based train', alpha=0.5, linewidth=5)
+plt.plot(k_array, user_test_mse, c=pal[0], label='User-based test', linewidth=5)
+plt.plot(k_array, item_train_mse, c=pal[1], label='Item-based train', alpha=0.5, linewidth=5)
+plt.plot(k_array, item_test_mse, c=pal[1], label='Item-based test', linewidth=5)
+plt.legend(loc='best', fontsize=20)
+plt.xticks(fontsize=16);
+plt.yticks(fontsize=16);
+plt.xlabel('k', fontsize=30);
+plt.ylabel('MSE', fontsize=30);
+plt.show()
