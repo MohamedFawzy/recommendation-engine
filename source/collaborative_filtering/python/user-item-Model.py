@@ -115,3 +115,21 @@ print 'Top-k User-based CF MSE: ' + str(get_mse(pred, test))
 
 pred = predict_topk(train, item_similarity, kind='item', k=40)
 print 'Top-k Item-based CF MSE: ' + str(get_mse(pred, test))
+
+# tunning the parameter of k
+k_array = [5, 15, 30, 50, 100, 200]
+user_train_mse = []
+user_test_mse = []
+item_test_mse = []
+item_train_mse = []
+
+
+for k in k_array:
+    user_pred = predict_topk(train, user_similarity, kind='user', k=k)
+    item_pred = predict_topk(train, item_similarity, kind='item', k=k)
+
+    user_train_mse += [get_mse(user_pred, train)]
+    user_test_mse  += [get_mse(user_pred, test)]
+
+    item_train_mse += [get_mse(item_pred, train)]
+    item_test_mse  += [get_mse(item_pred, test)]
