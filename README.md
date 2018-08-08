@@ -30,7 +30,7 @@ Recommender system algorithms and tools , method used and so on collrobative fil
     ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/Rplot01.png)
 
   - Item-based/User-based for tuning K-NearestNeighbors parameter.
-    ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/3848dfad980a88dba0672e4953fa4ef50866cc23/imgs/Figure_1_python.png)
+    ![alt text](https://raw.githubusercontent.com/MohamedFawzy/recommendation-engine/master/imgs/Figure_1_python.png)
 
 
 # Install :
