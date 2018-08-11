@@ -46,3 +46,24 @@ for index,row in user_activity.iterrows():
                 caseid = 0
 
 print(user_activity.head(30))
+
+user_activity = user_activity[user_activity['category'] == "V" ]
+user_activity = user_activity[['userid','webid']]
+user_activity_sort = user_activity.sort_values('webid', ascending=True)
+
+sLength = len(user_activity_sort['webid'])
+
+user_activity_sort['rating'] = pd.Series(np.ones((sLength,)),index=user_activity.index)
+
+ratmat = user_activity_sort.pivot(index='userid', columns='webid', values='rating').fillna(0)
+ratmat = ratmat.to_dense().as_matrix()
+
+# item profile generation
+
+# filter rows contains first columns as "A"
+items = raw_data.loc[raw_data[0] == "A"]
+# name the columns
+items.columns = ['record', 'webid', 'vote', 'desc', 'url']
+# get only two columns so slice dataframe with shape2
+items = items[['webid','desc']]
+print(items.shape)
