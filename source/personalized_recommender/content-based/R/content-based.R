@@ -41,4 +41,56 @@ nrat = unlist(lapply(ratings$Ratings, function(x)
 
 ratings = cbind(ratings,nrat)
 head(ratings)
+apply(ratings[,-c(1:3,23)],2,function(x)table(x))
+scaled_ratings = ratings[,-c(3,4)]
+scaled_ratings=scale(scaled_ratings[,-c(1,2,21)])
+scaled_ratings = cbind(scaled_ratings,ratings[,c(1,2,23)])
+head(scaled_ratings)
 
+set.seed(7)
+which_train <- sample(x = c(TRUE, FALSE), size = nrow(scaled_ratings),replace = TRUE, prob = c(0.8, 0.2))
+model_data_train <- scaled_ratings[which_train, ]
+model_data_test <- scaled_ratings[!which_train, ]
+dim(model_data_train)
+dim(model_data_test)
+# use random forrest algorithm to multiple layer classification
+library(randomForest)
+fit = randomForest(as.factor(nrat)~., data = model_data_train[,-c(19,20)])
+
+predictions <- predict(fit, model_data_test[,-c(19,20,21)], type="class")
+
+cm = table(predictions,model_data_test$nrat)
+(accuracy <- sum(diag(cm)) / sum(cm))
+(precision <- diag(cm) / rowSums(cm))
+recall <- (diag(cm) / colSums(cm))
+
+#extract distinct movieids
+totalMovieIds = unique(movies$MovieId)
+#see the sample movieids using tail() and head() functions:
+#a function to generate dataframe which creates non-rated
+#movies by active user and set rating to 0;
+nonratedmoviedf = function(userid){
+  ratedmovies = raw_data[raw_data$UserId==userid,]$MovieId
+  non_ratedmovies = totalMovieIds[!totalMovieIds %in%
+                                    ratedmovies]
+  df = data.frame(cbind(rep(userid),non_ratedmovies,0))
+  names(df) = c("UserId","MovieId","Rating")
+  return(df)
+}
+
+#let's extract non-rated movies for active userid 943
+activeusernonratedmoviedf = nonratedmoviedf(943)
+
+
+activeuserratings = merge(x = activeusernonratedmoviedf, y = movies, by = "MovieId", all.x = TRUE)
+
+
+#use predict() method to generate predictions for movie ratings
+#by the active user profile created in the previous step.
+predictions <- predict(fit, activeuserratings[,-c(1:4)], type="class")
+#creating a dataframe from the results
+recommend = data.frame(movieId = activeuserratings$MovieId,predictions)
+#remove all the movies which the model has predicted as 0 and
+#then we can use the remaining items as more probable movies
+#which might be liked by the active user.
+recommend = recommend[which(recommend$predictions == 1),]
