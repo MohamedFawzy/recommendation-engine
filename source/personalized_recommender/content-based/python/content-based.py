@@ -67,3 +67,5 @@ items.columns = ['record', 'webid', 'vote', 'desc', 'url']
 # get only two columns so slice dataframe with shape2
 items = items[['webid','desc']]
 print(items.shape)
+print("==============items================")
+print(items.head())
