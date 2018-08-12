@@ -69,3 +69,34 @@ items = items[['webid','desc']]
 print(items.shape)
 print("==============items================")
 print(items.head())
+print(items['webid'].unique().shape[0])
+
+items2 = items[items['webid'].isin(user_activity['webid'].tolist())]
+
+items_sort = items2.sort_values('webid', ascending=True)
+
+# create item profile using tf-idf function
+from sklearn.feature_extraction.text import TfidfVectorizer
+v = TfidfVectorizer(stop_words = "english", max_features = 100, ngram_range = (0,3), sublinear_tf = True)
+x = v.fit_transform(items_sort['desc'])
+itemprof = x.todense()
+print(itemprof)
+
+# user profile creation
+from scipy import linalg, dot
+userprof = dot(ratmat, itemprof)/linalg.norm(ratmat)/linalg.norm(itemprof)
+print(userprof)
+# compute the active user perferences for item using cosine similarity
+import sklearn.metrics
+similarityCalc = sklearn.metrics.pairwise.cosine_similarity(userprof, itemprof, dense_output = True)
+print(similarityCalc)
+# convert rating to binary 1,0 values based on condition < 0.6
+final_pred = np.where(similarityCalc > 0.6 , 1, 0)
+# get result for first three users
+print(final_pred[1])
+print(final_pred[2])
+print(final_pred[3])
+# remove zeros and get items recommended for user 213 as follows
+indexes_of_user = np.where(final_pred[213] == 1)
+print("get result for user 213")
+print(indexes_of_user)
