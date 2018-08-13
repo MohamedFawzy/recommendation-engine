@@ -94,3 +94,20 @@ recommend = data.frame(movieId = activeuserratings$MovieId,predictions)
 #then we can use the remaining items as more probable movies
 #which might be liked by the active user.
 recommend = recommend[which(recommend$predictions == 1),]
+
+# create context profile
+ts = ratings_ctx$TimeStamp
+head(ts)
+hours <- as.POSIXlt(ts,origin="1960-10-01")$hour
+head(hours)
+ratings_ctx = data.frame(cbind(ratings_ctx,hours))
+UCP = ratings_ctx[(ratings_ctx$UserId == 943),][,-c(2,3,4,5)]
+UCP_pref = aggregate(.~hours,UCP[,-1],sum)
+UCP_pref_sc = cbind(context = UCP_pref[,1],t(apply(UCP_pref[,-1], 1,function(x)(x-min(x))/(max(x)-min(x)))))
+UCP_pref_content = merge(x = recommend, y = movies, by = "MovieId", all.x = TRUE)
+active_user =cbind(UCP_pref_content$MovieId,(as.matrix(UCP_pref_content[,-c(1,2,3)]) %*% as.matrix(UCP_pref_sc[4,2:19])))
+head(active_user)
+active_user_df = as.data.frame(active_user)
+names(active_user_df) = c('MovieId','SimVal')
+FinalPredicitons_943 = active_user_df[order(-active_user_df$SimVal),]
+
