@@ -7,6 +7,7 @@ from pyspark import SparkContext
 from pyspark.mllib.recommendation import ALS, MatrixFactorizationModel, Rating
 # create spark context app
 sc = SparkContext(appName="UserBase")
+spark = SparkSession(sc)
 data = sc.textFile("/var/www/html/ml-100k/u.data")
 print("====================type===================")
 print(type(data))
@@ -29,3 +30,5 @@ print("===============first five ratings=======================")
 print(ratings.take(5))
 print("===============first five ratings end=======================")
 # get total number of unique users
+df = spark.createDataFrame(ratings, ["user"])
+df.select("user").distinct().show(5)
