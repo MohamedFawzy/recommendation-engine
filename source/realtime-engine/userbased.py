@@ -38,3 +38,27 @@ df.select("product").distinct().show(5)
 df.select("product").distinct().count()
 # number of rated products by each user pick top five
 df.groupBy("user").count().show(5)
+df.groupBy("rating").count().show()
+import numpy as np
+
+# ratings from 1..5 with distribution of number of counts
+#import matplotlib.pyplot as plt
+# n_groups = 5
+# x = df.groupBy("rating").count().select('count')
+# xx = x.rdd.flatMap(lambda x: x).collect()
+# fig, ax = plt.subplots()
+# index = np.arange(n_groups)
+# bar_width = 1
+# opacity = 0.4
+# rects1 = plt.bar(index, xx, bar_width, alpha=opacity, color='b', label='ratings')
+# plt.xlabel('ratings')
+# plt.ylabel('Counts')
+# plt.title('Distribution of ratings')
+# plt.xticks(index + bar_width, ('1.0', '2.0', '3.0', '4.0', '5.0'))
+# plt.legend()
+# plt.tight_layout()
+# plt.show()
+
+
+# rating per user
+df.groupBy("user").count().select("count").describe().show()
