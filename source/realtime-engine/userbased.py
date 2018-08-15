@@ -60,5 +60,7 @@ import numpy as np
 # plt.show()
 
 
-# rating per user
+# Statistics of ratings per user
 df.groupBy("user").count().select("count").describe().show()
+#Individual counts of ratings per user:
+df.stat.crosstab("user","Rating").show()
