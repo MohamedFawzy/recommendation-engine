@@ -71,3 +71,30 @@ print(df.groupBy("product").agg({'Rating': 'mean'}).take(5))
 # build the engine
 (training, test) = ratings.randomSplit([0.8, 0.2])
 print(training.count())
+print(test.count())
+rank = 10
+numIterations = 10
+model = ALS.train(training, rank, numIterations)
+print(model)
+# convert testdata to pipelineRDD
+testdata = test.map(lambda p: (p[0], p[1]))
+print(testdata)
+print(test.take(5))
+print(testdata.take(5))
+# predict user 119 to movie 392
+pred_index = model.predict(119, 392)
+print(pred_index)
+predictions = model.predictAll(testdata).map(lambda r: ((r[0], r[1]),r[2]))
+print(type(predictions))
+print(predictions.take(5))
+# recommend top n items to user using recommendProductsForUsers(n) where n number of items to be recommended
+recommendItemsToUsers = model.recommendProductsForUsers(10)
+print(recommendItemsToUsers.count())
+print(recommendItemsToUsers.take(2))
+# evalute the model using mean sqaured root error
+ratesAndPreds = ratings.map(lambda r: ( (r[0], r[1]),r[2]) ).join(predictions)
+MSE = ratesAndPreds.map(lambda r: ( r[1][0] - r[1][1]) ** 2).mean()
+print(MSE)
+from math import sqrt
+rmse = sqrt(MSE)
+print(rmse)
