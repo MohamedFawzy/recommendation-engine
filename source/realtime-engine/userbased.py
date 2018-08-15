@@ -64,3 +64,10 @@ import numpy as np
 df.groupBy("user").count().select("count").describe().show()
 #Individual counts of ratings per user:
 df.stat.crosstab("user","Rating").show()
+# average rating given by each user
+print(df.groupBy("user").agg({'Rating': 'mean'}).take(5))
+# average rating per movie
+print(df.groupBy("product").agg({'Rating': 'mean'}).take(5))
+# build the engine
+(training, test) = ratings.randomSplit([0.8, 0.2])
+print(training.count())
