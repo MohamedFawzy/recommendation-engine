@@ -1,12 +1,17 @@
 # Recommendation Engine
-Recommender system algorithms and tools , method used and so on collrobative filtering etc .
+Have you wondered how amazon recommend items to you ? or netflix recommend content for you , spotify and youtube Here i will summarize things as much as possible .
+
+Recommendation engine a branch of information retrieval and artificial intelligence , are powerful tools and techniques to analyze huge volumes of data , especially product information and user information , and then provide relevant suggestions based on data-mining approaches .
+
+you can find more here : https://medium.com/@mohamedfawzy_44931/recommendation-engine-explained-c5b8642cc0f
 
 
 # Requirements
 ### Native
-- R Language 3.5.x .
-- Python 2.7 .
-- Recommenderlab library for R language .
+- R Language 3.5.x.
+- Python 3.4.
+- Recommenderlab library for R language.
+- Spark 2.
 
 ### Docker
 - Docker installed on your host machine
