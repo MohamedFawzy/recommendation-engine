@@ -11,7 +11,7 @@ you can find more here : https://medium.com/@mohamedfawzy_44931/recommendation-e
 - R Language 3.5.x.
 - Python 3.4.
 - Recommenderlab library for R language.
-- Spark.
+- Spark 2.
 
 ### Docker
 - Docker installed on your host machine
