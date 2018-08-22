@@ -54,6 +54,15 @@ services:
       - "SPARK_MASTER=spark://spark-master:7077"
       - "constraint:node==spark-worker1"
 
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: "none"
+
+
 
   ##
   # Source containers
